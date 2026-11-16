@@ -21,14 +21,16 @@ Deno.serve(async (req) => {
     }
     const normalized = phones.map((p: string) => String(p).replace(/[\s()-]/g, "")).filter((p: string) => /^\+989\d{9}$/.test(p));
     if (!normalized.length) return new Response(JSON.stringify({ error: "No valid Iranian mobile numbers" }), { status: 400, headers: cors });
-    const apiUrl = Deno.env.get("SMS_API_URL");
+    const apiUrl = Deno.env.get("SMS_API_URL") || "https://api.free-sms.ir/v1/send";
     const apiToken = Deno.env.get("SMS_API_TOKEN");
-    if (!apiUrl || !apiToken) return new Response(JSON.stringify({ error: "SMS provider is not configured in function secrets" }), { status: 503, headers: cors });
+    if (!apiToken) return new Response(JSON.stringify({ error: "Set SMS_API_TOKEN in Supabase function secrets" }), { status: 503, headers: cors });
+    const line = Deno.env.get("SMS_LINE");
+    if (!line) return new Response(JSON.stringify({ error: "Set SMS_LINE in Supabase function secrets" }), { status: 503, headers: cors });
     const header = Deno.env.get("SMS_TOKEN_HEADER") || "Authorization";
     const providerResponse = await fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json", [header]: header.toLowerCase() === "authorization" ? `Bearer ${apiToken}` : apiToken },
-      body: JSON.stringify({ to: normalized, message })
+      body: JSON.stringify({ line, to: normalized, text: message })
     });
     const providerBody = await providerResponse.text();
     if (!providerResponse.ok) return new Response(JSON.stringify({ error: "SMS provider error", status: providerResponse.status, detail: providerBody.slice(0, 500) }), { status: 502, headers: cors });

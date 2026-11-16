@@ -38,3 +38,10 @@ html[lang="fa"] .auth-card{text-align:right}
 html[lang="fa"] .auth-card .brand-mark{margin-right:0}
 @media(max-width:1050px){html[lang="fa"] .main{margin-right:220px}}
 @media(max-width:700px){html[lang="fa"] .sidebar{transform:translateX(100%)}html[lang="fa"] .sidebar.mobile-open{transform:translateX(0)}html[lang="fa"] .main{margin-right:0}html[lang="fa"] .toast{left:5vw;right:5vw}}
+
+/* Jalali date picker */
+html[lang="fa"] .jalali-date-input{width:100%;font-family:'Vazirmatn',sans-serif;direction:rtl;text-align:right;cursor:pointer}
+html[lang="fa"] .rmdp-wrapper,html[lang="fa"] .rmdp-container{font-family:'Vazirmatn',sans-serif;direction:rtl;z-index:1000}
+html[lang="fa"] .rmdp-header-values,html[lang="fa"] .rmdp-week,html[lang="fa"] .rmdp-day-picker{direction:rtl}
+html[lang="fa"] .rmdp-day,
+html[lang="fa"] .rmdp-week-day{font-family:'Vazirmatn',sans-serif}

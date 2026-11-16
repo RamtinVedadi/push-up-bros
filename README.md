@@ -37,16 +37,11 @@ The anon key is intended for browser use; security comes from RLS. Never put the
 ## SMS setup — important
 There is no reliable unlimited free SMS service to Iranian mobile networks that this project can promise. Iranian SMS panel accounts commonly require purchased credit. The SMS Center is a UI/configuration placeholder; it deliberately does not send real SMS from the browser because that would expose your API token.
 
-The secure Edge Function at `supabase/functions/send-sms/index.ts` is a generic starting adapter. Deploy it with:
+A promising starter provider is [Free-SMS Iran](https://free-sms.ir/): its website advertises free panel activation and 5,000 toman initial test credit, and publishes a REST API. This is **not unlimited free SMS**; real messages consume credit. Its API docs specify POST https://api.free-sms.ir/v1/send, Authorization: Bearer YOUR_API_KEY, and JSON fields line, to and text. See [API documentation](https://free-sms.ir/webservice-api/). Verify current credit, terms, sender-line eligibility and delivery to your friends before relying on it.
+
+The secure Edge Function at `supabase/functions/send-sms/index.ts` is preconfigured for this provider. Deploy it with:
 ```bash
 supabase functions deploy send-sms
-supabase secrets set SMS_API_URL="YOUR_PROVIDER_ENDPOINT" SMS_API_TOKEN="YOUR_TOKEN"
+supabase secrets set SMS_API_TOKEN="YOUR_API_KEY" SMS_LINE="YOUR_SENDER_LINE"
 ```
-The example adapter sends JSON `{ "to": ["+989..."], "message": "..." }` and expects a provider compatible with that shape. Most Iranian panels use different endpoint, field names, authentication and sometimes GET/form-data; adapt the function to the panel's official API documentation before sending. Then update the SMS Center UI to invoke `supabase.functions.invoke('send-sms', { body: { phones, message } })` instead of browser fetch. Do not put the provider token into app settings or source control.
-
-## Current scope
-- Dashboard and monthly leaderboard are implemented.
-- Daily reps/sets logging and member view are implemented.
-- Local demo mode is available immediately.
-- Supabase sign-in and database loading are wired; profile/entry policies are in SQL.
-- SMS screen is a provider configuration UI; live delivery requires provider-specific adapter setup.
+The starter adapter sends the documented Free-SMS format (line, to, text). For another Iranian SMS panel, change the Edge Function request URL, authentication and payload to match that provider's official API. Never put provider credentials into frontend code.

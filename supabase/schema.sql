@@ -6,8 +6,11 @@ create table if not exists public.profiles (
   display_name text not null default 'New Bro',
   phone text unique,
   role text not null default 'member' check (role in ('admin','member')),
+  is_active boolean not null default true,
   created_at timestamptz not null default now()
 );
+alter table public.profiles add column if not exists is_active boolean not null default true;
+
 create table if not exists public.pushup_entries (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,

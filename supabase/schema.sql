@@ -27,8 +27,12 @@ create index if not exists pushup_entries_user_date_idx on public.pushup_entries
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  insert into public.profiles(id, display_name)
-  values (new.id, coalesce(new.raw_user_meta_data->>'display_name', split_part(new.email,'@',1)));
+  insert into public.profiles(id, display_name, phone)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data->>'display_name', split_part(new.email,'@',1)),
+    nullif(new.raw_user_meta_data->>'phone','')
+  );
   return new;
 end;
 $$;

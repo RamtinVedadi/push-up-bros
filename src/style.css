@@ -45,3 +45,7 @@ html[lang="fa"] .rmdp-wrapper,html[lang="fa"] .rmdp-container{font-family:'Vazir
 html[lang="fa"] .rmdp-header-values,html[lang="fa"] .rmdp-week,html[lang="fa"] .rmdp-day-picker{direction:rtl}
 html[lang="fa"] .rmdp-day,
 html[lang="fa"] .rmdp-week-day{font-family:'Vazirmatn',sans-serif}
+
+/* Clear, high-contrast signup feedback */
+.auth-card .auth-error{display:block;margin:16px 0 0;padding:12px 14px;background:#3b1e20;border:1px solid #ef646b;border-right:4px solid #ff626b;border-radius:8px;color:#ffdadd;font-size:12px;font-weight:600;line-height:1.9;text-align:right}
+.auth-card .phone-help{display:block;line-height:1.8}
